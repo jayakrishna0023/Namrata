@@ -1,0 +1,10 @@
+{
+  "name": "vriksha-farming-assistant",
+  "version": "1.0.0",
+  "description": "Secure Voice-Based Multilingual Natural Farming Consultant",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}

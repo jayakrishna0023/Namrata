@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vriksha - Professional Voice-Based Natural Farming Consultant</title>
+    <!-- Google Fonts & Material Rounded Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="styles.css">
+    <!-- GSAP (GreenSock Animation Platform) CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Premium Glass Top Bar -->
+        <header class="app-header">
+            <div class="brand-section">
+                <span class="brand-logo-icon material-symbols-rounded">spa</span>
+                <div>
+                    <h1 class="brand-name">Vriksha</h1>
+                    <p id="brandTagline" class="brand-tagline">Voice-Based Multilingual Natural Farming Consultant</p>
+                </div>
+            </div>
+            
+            <div class="header-controls">
+                <select id="langSelector" class="lang-dropdown" aria-label="Language Selector">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+                    <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
+                </select>
+                
+                <button id="btnDrawerOpen" class="icon-btn" title="Saved Queries" aria-label="Open History Drawer">
+                    <span class="material-symbols-rounded">folder_open</span>
+                </button>
+                <button id="btnModalOpen" class="icon-btn" title="Voice Assistant Settings" aria-label="Open Settings Modal">
+                    <span class="material-symbols-rounded">settings</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Segmented Tab Navigation -->
+        <nav class="tab-navigation" aria-label="Main Navigation Tabs">
+            <button class="tab-btn active" data-tab="chat" id="tabChat">
+                <span class="material-symbols-rounded">forum</span>Chat Advisor
+            </button>
+            <button class="tab-btn" data-tab="diseases" id="tabDiseases">
+                <span class="material-symbols-rounded">coronavirus</span>Disease Finder
+            </button>
+            <button class="tab-btn" data-tab="seeds" id="tabSeeds">
+                <span class="material-symbols-rounded">psychology</span>Seed Advisor
+            </button>
+            <button class="tab-btn" data-tab="subsidies" id="tabSubsidies">
+                <span class="material-symbols-rounded">payments</span>Subsidies & Schemes
+            </button>
+        </nav>
+
+        <!-- TAB CONTENT: VOICE ASSISTANT ADVISOR -->
+        <div id="chatTab" class="tab-content active">
+            
+            <!-- Onboarding Hero welcome details -->
+            <div id="welcomeHero" class="welcome-hero">
+                <span class="hero-icon">👩‍🌾</span>
+                <h2 id="emptyStateHeader" class="hero-title">Welcome to Vriksha!</h2>
+                <p id="emptyStateDesc" class="hero-desc">Ask a farming question by speaking into the microphone or typing in the box below. Switch languages at the top.</p>
+                
+                <div style="margin-top:28px;">
+                    <h3 id="onboardingTitle" style="color:var(--primary-green); font-size:1.2rem; margin-bottom:5px;">How Vriksha can help you today</h3>
+                    <div class="features-grid">
+                        <div class="feature-card" onclick="switchTabAnimated('diseases')">
+                            <span class="feature-card-icon material-symbols-rounded">eco</span>
+                            <h4 id="card1Title" class="feature-card-title">Disease Treatment</h4>
+                            <p id="card1Desc" class="feature-card-desc">Identify crop diseases and get step-by-step organic remedies (like Jivamrita, Neemastra).</p>
+                        </div>
+                        <div class="feature-card" onclick="switchTabAnimated('seeds')">
+                            <span class="feature-card-icon material-symbols-rounded">psychology</span>
+                            <h4 id="card2Title" class="feature-card-title">Seed & Soil Guidance</h4>
+                            <p id="card2Desc" class="feature-card-desc">Get seed variety recommendations matched to your soil type and sowing season.</p>
+                        </div>
+                        <div class="feature-card" onclick="switchTabAnimated('subsidies')">
+                            <span class="feature-card-icon material-symbols-rounded">payments</span>
+                            <h4 id="card3Title" class="feature-card-title">Financial & Subsidies</h4>
+                            <p id="card3Desc" class="feature-card-desc">Learn about PM-KISAN, PKVY organic farming subsidies, and crop insurance schemes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Response Advice Panel -->
+            <section id="outputSection" class="output-section" aria-labelledby="responseTitle">
+                <div class="response-card">
+                    <div id="userQueryBubble" class="user-query-bubble">🗣️ User Query</div>
+                    <h2 id="responseTitle" class="response-title">Vriksha's Organic Advice</h2>
+                    <div id="responseContent" class="response-content">Loading advice...</div>
+                    
+                    <div class="card-actions">
+                        <button id="btnSpeak" class="action-btn btn-speak">
+                            <span class="material-symbols-rounded">volume_up</span>Speak Advice
+                        </button>
+                        <button id="btnStop" class="action-btn btn-stop">
+                            <span class="material-symbols-rounded">volume_off</span>Stop Voice
+                        </button>
+                        <button id="btnCopy" class="action-btn btn-copy">
+                            <span class="material-symbols-rounded">content_copy</span>Copy Text
+                        </button>
+                        <button id="btnBookmark" class="action-btn btn-bookmark">
+                            <span class="material-symbols-rounded">bookmark</span>Bookmark
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Premium Voice Assistant Console -->
+            <div class="voice-console">
+                
+                <!-- Central Liquid Blob Visualizer -->
+                <div id="visualizerContainer" class="visualizer-container state-idle">
+                    <div class="orb-backdrop"></div>
+                    <svg class="liquid-orb-svg" viewBox="0 0 200 200">
+                        <defs>
+                            <radialGradient id="liquidGrad1" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#00e676" stop-opacity="0.8"/>
+                                <stop offset="100%" stop-color="#051f11" stop-opacity="0"/>
+                            </radialGradient>
+                            <radialGradient id="liquidGrad2" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#00b0ff" stop-opacity="0.6"/>
+                                <stop offset="100%" stop-color="#021421" stop-opacity="0"/>
+                            </radialGradient>
+                            <radialGradient id="liquidGrad3" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#76ff03" stop-opacity="0.5"/>
+                                <stop offset="100%" stop-color="#041201" stop-opacity="0"/>
+                            </radialGradient>
+                        </defs>
+                        <!-- Concentric overlapping SVG blobs morphing dynamically -->
+                        <circle class="liquid-blob blob-1" cx="100" cy="100" r="75" fill="url(#liquidGrad1)" />
+                        <circle class="liquid-blob blob-2" cx="100" cy="100" r="68" fill="url(#liquidGrad2)" />
+                        <circle class="liquid-blob blob-3" cx="100" cy="100" r="60" fill="url(#liquidGrad3)" />
+                    </svg>
+                    
+                    <div class="thinking-loader"></div>
+                    <button id="orbCore" class="orb-core" aria-label="Microphone Voice Input Toggle">
+                        <span class="material-symbols-rounded orb-core-icon">mic</span>
+                    </button>
+                    
+                    <!-- Horizontal audio visualizer equalizer spectrum -->
+                    <div class="equalizer-waves">
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Status Labels -->
+                <div class="assistant-status">
+                    <p id="statusMain" class="status-main">Tap the Orb or speak to start</p>
+                    <p id="statusSubtitle" class="status-subtitle"></p>
+                </div>
+                
+                <!-- Real-time dictation subtitle bubble -->
+                <div id="liveTranscript" class="live-transcript-bubble">...</div>
+                
+                <!-- Toggle controls (Auto-speak toggle switch) -->
+                <div class="console-controls">
+                    <div class="control-toggle-wrapper">
+                        <span id="autoSpeakLabel" class="control-label">Auto-Speak Responses</span>
+                        <label class="switch">
+                            <input type="checkbox" id="chkAutoSpeak">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Text input fallback row -->
+                <div class="input-row">
+                    <input type="text" id="queryInput" class="text-input-field" placeholder="e.g., How do I control pests in tomato naturally?" aria-label="Text farming query input">
+                    <button id="btnAsk" class="btn-send">
+                        <span class="material-symbols-rounded">send</span>Send Question
+                    </button>
+                </div>
+                
+
+            </div>
+
+        </div>
+
+        <!-- TAB CONTENT: DISEASE DIRECTORY -->
+        <div id="diseasesTab" class="tab-content">
+            <div class="welcome-hero">
+                <h2 id="labelDiseaseSearch" class="hero-title">Disease Treatment</h2>
+                <div class="db-search-bar">
+                    <input type="text" id="diseaseSearchInput" class="text-input-field" placeholder="Search diseases or crops..." aria-label="Search crop diseases">
+                </div>
+                <div id="diseaseListContainer" class="db-grid">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: SEED ADVISOR -->
+        <div id="seedsTab" class="tab-content">
+            <div class="welcome-hero">
+                <h2 id="labelSeedAdvisor" class="hero-title">Seed Advisor</h2>
+                <div class="db-search-bar" style="align-items:center; flex-wrap:wrap; justify-content:center;">
+                    <label id="labelSoilType" for="soilTypeSelect" style="font-weight:600; color:var(--text-muted);">Select Soil Type:</label>
+                    <select id="soilTypeSelect" class="lang-dropdown" style="border-radius:10px;">
+                        <option value="alluvial">Alluvial (Loamy / Clayey)</option>
+                        <option value="black">Black Cotton Soil</option>
+                        <option value="red">Red Sandy / Loamy Soil</option>
+                    </select>
+                    <button id="btnFilterSeeds" class="btn-send" style="padding:10px 24px; font-size:0.9rem;">
+                        <span class="material-symbols-rounded">psychology</span>Get Varieties
+                    </button>
+                </div>
+                <div id="seedAdvisorContainer" class="db-grid">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: SUBSIDIES GUIDE -->
+        <div id="subsidiesTab" class="tab-content">
+            <div class="welcome-hero">
+                <h2 id="labelSubsidiesTitle" class="hero-title">Financial & Subsidies</h2>
+                <div id="subsidiesContainer" class="db-grid">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer id="footerText" class="app-footer">
+            Developed with love for sustainable farming. 🌾 💚
+        </footer>
+
+    </div>
+
+    <!-- Slide-Out Sidebar Drawer (History and Bookmarks) -->
+    <div id="drawerBackdrop" class="drawer-backdrop"></div>
+    <div id="drawer" class="sidebar-drawer" role="dialog" aria-labelledby="drawerTitle">
+        <div class="drawer-header">
+            <h2 id="drawerTitle" class="drawer-title">Saved Queries & Bookmarks</h2>
+            <button id="btnDrawerClose" class="drawer-close" aria-label="Close drawer">×</button>
+        </div>
+        <div class="drawer-content">
+            <h3 id="lblHistorySection" class="history-section-title">History</h3>
+            <div id="historyList" class="drawer-list"></div>
+            
+            <h3 id="lblBookmarkSection" class="history-section-title">Bookmarks</h3>
+            <div id="bookmarkList" class="drawer-list"></div>
+        </div>
+    </div>
+
+    <!-- Floating Overlay Settings Modal (Voice Profile & Settings) -->
+    <div id="modal" class="modal-overlay" role="dialog" aria-labelledby="modalTitle">
+        <div class="modal-window">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title">Voice Assistant Settings</h2>
+                <button id="btnModalClose" class="modal-close" aria-label="Close settings modal">×</button>
+            </div>
+            
+            <!-- Voice Selector replaces Groq API settings in UI -->
+            <div class="modal-form-group">
+                <label id="lblVoiceSelect" for="voiceProfileSelect" class="modal-label">Choose Assistant Voice (Different Voice)</label>
+                <select id="voiceProfileSelect" class="lang-dropdown" style="width:100%; border-radius:8px;">
+                    <option value="default">Default System Voice</option>
+                </select>
+                <p id="voiceHelp" class="modal-help">Select a voice from the list of text-to-speech models installed on your browser for the selected language.</p>
+            </div>
+            
+            <button id="btnSaveSettings" class="btn-save-settings">Apply Settings</button>
+        </div>
+    </div>
+
+    <!-- Floating Global Loader Overlay -->
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="spinner"></div>
+        <p id="loaderText" class="loader-text">Vriksha is analyzing your query...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
