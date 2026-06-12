@@ -613,11 +613,20 @@ const server = http.createServer((req, res) => {
         }
     });
 });
+module.exports = {
+    classifyIntent,
+    searchLocalKB,
+    callGroqCompletions,
+    formatFallbackResponse,
+    SYSTEM_PROMPTS
+};
 
-server.listen(PORT, () => {
-    console.log(`=== Secure Natural Farming Consultant Backend Server (Node.js) ===`);
-    console.log(`Server is running securely at http://localhost:${PORT}`);
-    console.log(`Groq API Key status: ${process.env.GROQ_API_KEY ? 'Active (Loaded from .env)' : 'Inactive (No key found in .env)'}`);
-    console.log(`Double-click index.html or visit http://localhost:${PORT} in your browser.`);
-    console.log(`==================================================================`);
-});
+if (require.main === module) {
+    server.listen(PORT, () => {
+        console.log(`=== Secure Natural Farming Consultant Backend Server (Node.js) ===`);
+        console.log(`Server is running securely at http://localhost:${PORT}`);
+        console.log(`Groq API Key status: ${process.env.GROQ_API_KEY ? 'Active (Loaded from .env)' : 'Inactive (No key found in .env)'}`);
+        console.log(`Double-click index.html or visit http://localhost:${PORT} in your browser.`);
+        console.log(`==================================================================`);
+    });
+}
