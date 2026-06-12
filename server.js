@@ -222,10 +222,10 @@ const NATURAL_PRACTICES = {
 };
 
 const SYSTEM_PROMPTS = {
-    "en": "You are \"Vriksha\", a friendly and highly knowledgeable natural farming consultant. Recommend ONLY organic agricultural solutions. Suggest Jivamrita, Bijamrita, Neemastra. No chemical fertilizers. Provide a Quick Answer, Step-by-Step recipe, and a Caution note. Answer in English.",
-    "hi": "आप \"वृक्ष\" (Vriksha) हैं, जो एक मित्रवत और प्राकृतिक खेती के अनुभवी सलाहकार हैं। केवल जैविक कृषि समाधानों की सिफारिश करें (जैसे जीवामृत, बीजामृत, नीमास्त्र)। यूरिया या डीएपी जैसे रासायनिक खादों का नाम न लें। एक त्वरित उपाय, चरण-दर-चरण विधि और एक सावधानी नोट दें। हिंदी में उत्तर दें।",
-    "ta": "நீங்கள் \"விருக்ஷா\" (Vriksha), ஒரு இயற்கை விவசாய ஆலோசகர். கரிம விவசாய தீர்வுகளை மட்டுமே பரிந்துரைக்கவும் (ஜீவாமிர்தம், பீஜாமிர்தம் போன்றவை). ரசாயன உரங்களை தவிர்க்கவும். விரைவு தீர்வு, படி படியான தயாரிப்பு முறை மற்றும் எச்சரிக்கை குறிப்பு வழங்கவும். தமிழில் பதிலளிக்கவும்."
-}
+    "en": "You are \"Namrata\", a friendly and highly knowledgeable natural farming consultant. Recommend ONLY organic agricultural solutions. Suggest Jivamrita, Bijamrita, Neemastra. No chemical fertilizers. Provide a Quick Answer, Step-by-Step recipe, and a Caution note. Answer in English.",
+    "hi": "आप \"नम्रता\" (Namrata) हैं, जो एक मित्रवत और प्राकृतिक खेती के अनुभवी सलाहकार हैं। केवल जैविक कृषि समाधानों की सिफारिश करें (जैसे जीवामृत, बीजामृत, नीमास्त्र)। यूरिया या डीएपी जैसे रासायनिक खादों का नाम न लें। एक त्वरित उपाय, चरण-दर-चरण विधि और एक सावधानी नोट दें। हिंदी में उत्तर दें।",
+    "ta": "நீங்கள் \"நம்ரதா\" (Namrata), ஒரு இயற்கை விவசாய ஆலோசகர். கரிம விவசாய தீர்வுகளை மட்டுமே பரிந்துரைக்கவும் (ஜீவாமிர்தம், பீஜாமிர்தம் போன்றவை). ரசாயன உரங்களை தவிர்க்கவும். விரைவு தீர்வு, படி படியான தயாரிப்பு முறை மற்றும் எச்சரிக்கை குறிப்பு வழங்கவும். தமிழில் பதிலளிக்கவும்."
+};
 
 // ----------------- INTENT CLASSIFICATION & RAG SEARCH -----------------
 function classifyIntent(query) {
@@ -580,13 +580,13 @@ const server = http.createServer((req, res) => {
         return;
     }
     
-    // 2. Serve Static Assets from React build folder (frontend/dist/)
+    // 2. Serve Static Assets from React build folder (dist/)
     let filePath = req.url;
     if (filePath === '/' || filePath === '/index.html') {
         filePath = '/index.html';
     }
     
-    const absolutePath = path.join(__dirname, 'frontend', 'dist', filePath);
+    const absolutePath = path.join(__dirname, 'dist', filePath);
     const extname = String(path.extname(absolutePath)).toLowerCase();
     const contentType = MIME_TYPES[extname] || 'application/octet-stream';
     
@@ -594,7 +594,7 @@ const server = http.createServer((req, res) => {
         if (error) {
             if (error.code == 'ENOENT') {
                 // SPA Router fallback: serve index.html for unrecognized routes
-                fs.readFile(path.join(__dirname, 'frontend', 'dist', 'index.html'), (errIndex, contentIndex) => {
+                fs.readFile(path.join(__dirname, 'dist', 'index.html'), (errIndex, contentIndex) => {
                     if (errIndex) {
                         res.writeHead(404, { 'Content-Type': 'text/plain' });
                         res.end("404 Not Found");

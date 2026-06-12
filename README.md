@@ -1,16 +1,20 @@
-# Vriksha 🌱 - Secure Multilingual Conversational Voice Assistant for Natural Farming
+# Namrata 🌱 - Connecting Dreams
 
-Vriksha is a production-grade, secure client-server voice assistant designed to empower farmers, rural agriculture advisors, and sustainable farming practitioners. It provides instant, practical, and grounded organic agricultural advice in English, Hindi, and Tamil.
+### Secure Voice-Based Multilingual Natural Farming Consultant
+
+Namrata is a production-grade, secure conversational voice assistant designed to empower farmers, rural agriculture advisors, and sustainable farming practitioners. Built with a modern **React + Vite + Tailwind CSS v4 + TypeScript** client and a secure **Node.js** backend, it provides instant, practical, and grounded organic agricultural advice in **English, Hindi, and Tamil**.
 
 ---
 
 ## 🚀 Key Highlights
 
-*   **Zero-Dependency Node.js Server**: Built natively using Node's standard `http` and `https` libraries. Runs instantly on any machine without complex installation steps or C-bindings compile issues.
+*   **Premium React Frontend**: Recreated with a modern, high-performance, single-page application structure featuring TypeScript type safety and Tailwind CSS v4 utility styling.
+*   **Aesthetic Light Theme**: A beautiful, clean, white-themed chat advisor dashboard designed for high-contrast sunlight readability in the field.
 *   **Secure API Architecture**: Complete isolation of the Groq API key on the backend. Client browsers communicate with the secure `/api/chat` server gateway, preventing credential theft or front-end exposure.
-*   **Custom Voice Profile Selector ("Different Voice")**: Added dynamic voice queries that fetch speech-to-text models installed on the user's browser, permitting localized accents (English, Hindi, and Tamil voices) cached per language.
+*   **Cinematic Video Landing Page**: A gorgeous fullscreen landing page section utilizing an overlay looping video background with custom fade-in/fade-out transitions.
+*   **Custom Voice Profile Selector**: Advanced settings to choose speech-to-text and text-to-speech models installed on the user's browser, permitting localized accents (English, Hindi, and Tamil voices) cached per language.
 *   **Liquid SVG Morphing Visualizer**: A breathing visualizer orb consisting of overlapping, concentric SVG paths driven by GSAP animations, reflecting state changes (Listening, Thinking, Speaking, Idle).
-*   **Web Audio sound Synthesizer**: Generates localized, lag-free musical chimes for microphone initialization and response completion utilizing native raw oscillators (no external audio assets required).
+*   **Web Audio Sound Synthesizer**: Generates localized, lag-free musical chimes for microphone initialization and response completion utilizing native raw oscillators (no external audio assets required).
 
 ---
 
@@ -18,13 +22,22 @@ Vriksha is a production-grade, secure client-server voice assistant designed to 
 
 ```text
 Namrata/
-├── package.json         # Node.js project configuration (npm start script)
-├── .env                 # Private environment variables (contains GROQ_API_KEY)
+├── dist/                # Compiled production assets served by Node/Vercel
+├── frontend/            # React + Vite + TypeScript + Tailwind CSS client application
+│   ├── public/          # Static public assets (favicons, SVGs)
+│   ├── src/             # React application source code
+│   │   ├── assets/      # Image and icon assets
+│   │   ├── data/        # Multilingual database and translations (farmingData.ts)
+│   │   ├── styles/      # Typography and theme configurations (fonts.css, theme.css)
+│   │   ├── App.tsx      # Main application component (audio, GSAP visualizer, chat logic)
+│   │   └── main.tsx     # React application entry point
+│   ├── package.json     # Frontend configuration, dependencies, and build scripts
+│   ├── vite.config.ts   # Vite bundler configuration (compiled output routes to root dist/)
+│   └── tsconfig.json    # TypeScript compiler configuration
+├── package.json         # Root package configuration containing orchestration scripts
 ├── server.js            # Secure Node.js server, intent parser & Groq gateway
-├── index.html           # Core layout structure (Material symbols, segmented tabs)
-├── styles.css           # Custom Glassmorphic design system & response layouts
-├── app.js               # Advanced frontend logic (Speech recognition, Web Audio synthesis, GSAP)
-└── README.md            # Technical overview and deployment documentation
+├── .env                 # Environment variables (contains GROQ_API_KEY)
+└── README.md            # Technical documentation
 ```
 
 ---
@@ -47,37 +60,38 @@ graph TD
 ## 🛠️ Installation & Execution
 
 ### 1. Requirements
-- Ensure **Node.js** (version 16 or higher) is installed on your operating system.
+- Ensure **Node.js** (version 18 or higher) and **npm** are installed on your operating system.
 
 ### 2. Configuration
 Verify that the `.env` file in the root folder contains your Groq API key:
 ```ini
 GROQ_API_KEY=gsk_your_groq_api_key_here
 ```
-*(Note: A valid API key is already pre-configured in this repository)*
 
-### 3. Execution
-Open your terminal in the project directory and start the server:
-```bash
-npm start
-```
-Or run the server file directly:
-```bash
-node server.js
-```
+### 3. Build & Run Locally
 
-### 4. Application Access
-Open your web browser and navigate to:
-```text
-http://localhost:8000
-```
+1. Install dependencies and compile the frontend:
+   ```bash
+   npm run build
+   ```
+   *This automatically installs dependencies in the `frontend` folder and compiles the React application into the root `dist/` directory.*
+
+2. Start the secure Node.js backend:
+   ```bash
+   npm start
+   ```
+
+3. Open your web browser and navigate to:
+   ```text
+   http://localhost:8000
+   ```
 
 ---
 
 ## 💡 Features Walkthrough
 
-### 1. Speech-to-Text (STT) Dictation
-Clicking the central visualizer orb initiates the microphone capture. As you speak, a real-time transcript bubble displays your transcribing text. Clicking the orb again stops recording.
+### 1. Speech-to-Text (STT) Dictation & Feedback
+Clicking the central visualizer orb initiates microphone capture. As you speak, a real-time transcript bubble displays your transcribing text. Clicking the orb again stops recording. The stop listening feature is fully integrated with instant button state updates.
 
 ### 2. Grounded Intent RAG Database
 The backend classifies inputs into categories (Crop Diseases, Seed/Soil Advice, Subsidies/Finance, General query). If a match is found in the local verified natural farming database, it is injected as grounding instructions to the Llama-3 model, ensuring accurate, chemical-free, organic solutions.

@@ -1,7 +1,7 @@
 {
-  "name": "vriksha-farming-assistant",
+  "name": "namrata-farming-assistant",
   "version": "1.0.0",
-  "description": "Secure Voice-Based Multilingual Natural Farming Consultant",
+  "description": "Secure Voice-Based Multilingual Natural Farming Consultant under the Namrata brand",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

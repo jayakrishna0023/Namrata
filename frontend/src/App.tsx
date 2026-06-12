@@ -1105,7 +1105,7 @@ export default function App() {
                         className="mt-5 w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-bold bg-black text-white hover:bg-slate-800 transition-colors cursor-pointer"
                       >
                         <Mic className="w-3.5 h-3.5" />
-                        Consult Vriksha about this Disease
+                        Consult Namrata about this Disease
                       </button>
                     </div>
                   ))}
@@ -1162,7 +1162,7 @@ export default function App() {
                         className="mt-5 w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-bold bg-black text-white hover:bg-slate-800 transition-colors cursor-pointer"
                       >
                         <Mic className="w-3.5 h-3.5" />
-                        Consult Vriksha about Seeds
+                        Consult Namrata about Seeds
                       </button>
                     </div>
                   ))}
@@ -1197,7 +1197,7 @@ export default function App() {
                       className="mt-5 w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-xs font-bold bg-black text-white hover:bg-slate-800 transition-colors cursor-pointer"
                     >
                       <Mic className="w-3.5 h-3.5" />
-                      Consult Vriksha about this Scheme
+                      Consult Namrata about this Scheme
                     </button>
                   </div>
                 ))}
