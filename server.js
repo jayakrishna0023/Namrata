@@ -580,20 +580,29 @@ const server = http.createServer((req, res) => {
         return;
     }
     
-    // 2. Serve Static Assets (index.html, styles.css, app.js)
-    let filePath = '.' + req.url;
-    if (filePath === './' || filePath === './index.html') {
-        filePath = './index.html';
+    // 2. Serve Static Assets from React build folder (frontend/dist/)
+    let filePath = req.url;
+    if (filePath === '/' || filePath === '/index.html') {
+        filePath = '/index.html';
     }
     
-    const extname = String(path.extname(filePath)).toLowerCase();
+    const absolutePath = path.join(__dirname, 'frontend', 'dist', filePath);
+    const extname = String(path.extname(absolutePath)).toLowerCase();
     const contentType = MIME_TYPES[extname] || 'application/octet-stream';
     
-    fs.readFile(filePath, (error, content) => {
+    fs.readFile(absolutePath, (error, content) => {
         if (error) {
-            if(error.code == 'ENOENT') {
-                res.writeHead(404, { 'Content-Type': 'text/plain' });
-                res.end("404 Not Found");
+            if (error.code == 'ENOENT') {
+                // SPA Router fallback: serve index.html for unrecognized routes
+                fs.readFile(path.join(__dirname, 'frontend', 'dist', 'index.html'), (errIndex, contentIndex) => {
+                    if (errIndex) {
+                        res.writeHead(404, { 'Content-Type': 'text/plain' });
+                        res.end("404 Not Found");
+                    } else {
+                        res.writeHead(200, { 'Content-Type': 'text/html' });
+                        res.end(contentIndex, 'utf-8');
+                    }
+                });
             } else {
                 res.writeHead(500);
                 res.end(`Sorry, check with the site admin for error: ${error.code} ..\n`);
